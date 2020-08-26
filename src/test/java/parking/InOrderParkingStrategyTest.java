@@ -45,7 +45,17 @@ public class InOrderParkingStrategyTest {
 
         /* Exercise 1, Write a test case on InOrderParkingStrategy.createNoSpaceReceipt()
          * With using Mockito to mock the input parameter */
+        //given
+        ParkingLot parkingLot1 = new ParkingLot("parkinglot1", 0);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot1);
 
+        //when
+        when(car.getName()).thenReturn("car1");
+        Receipt receipt = inOrderParkingStrategy.park(parkingLots, car);
+
+        //then
+        assertEquals("No Parking Lot", receipt.getParkingLotName());
     }
 
     @Test
