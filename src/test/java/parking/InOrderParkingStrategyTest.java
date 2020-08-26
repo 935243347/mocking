@@ -1,17 +1,12 @@
 package parking;
 
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static parking.ParkingStrategy.NO_PARKING_LOT;
+import static org.mockito.Mockito.*;
 
 public class InOrderParkingStrategyTest {
 
@@ -56,14 +51,24 @@ public class InOrderParkingStrategyTest {
 
         //then
         assertEquals("No Parking Lot", receipt.getParkingLotName());
+
     }
 
     @Test
-    @PrepareForTest(InOrderParkingStrategy.class)
     public void testPark_givenNoAvailableParkingLot_thenCreateNoSpaceReceipt() throws Exception {
 
         /* Exercise 2: Test park() method. Use Mockito.spy and Mockito.verify
         to test the situation for no available parking lot */
+        //given
+        List<ParkingLot> parkingLots = new ArrayList<>();
+
+        //when
+        when(car.getName()).thenReturn("car1");
+        InOrderParkingStrategy inOrderParkingStrategyMock = spy(new InOrderParkingStrategy());
+        Receipt receipt = inOrderParkingStrategyMock.park(parkingLots, car);
+
+        //then
+        verify(inOrderParkingStrategyMock, times(1)).createNoSpaceReceipt(car);
 
     }
 

@@ -29,7 +29,7 @@ public class InOrderParkingStrategy implements ParkingStrategy {
 		return ParkingLot.getBasicHourlyPrice();
 	}
 
-	private Receipt createReceipt(ParkingLot parkingLot, Car car) {
+	public Receipt createReceipt(ParkingLot parkingLot, Car car) {
 		
 		Receipt receipt = new Receipt();
 		receipt.setCarName(car.getName());
@@ -37,7 +37,7 @@ public class InOrderParkingStrategy implements ParkingStrategy {
 		return receipt;
 	}
 
-	private Receipt createNoSpaceReceipt(Car car) {
+	public Receipt createNoSpaceReceipt(Car car) {
 		
 		Receipt receipt = new Receipt();
 		receipt.setCarName(car.getName());
