@@ -2,16 +2,46 @@ package parking;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
+import static parking.ParkingStrategy.NO_PARKING_LOT;
 
 public class VipParkingStrategyTest {
 
-	@Test
+    @Test
     public void testPark_givenAVipCarAndAFullParkingLog_thenGiveAReceiptWithCarNameAndParkingLotName() {
 
-	    /* Exercise 4, Write a test case on VipParkingStrategy.park()
-	    * With using Mockito spy, verify and doReturn */
+        /* Exercise 4, Write a test case on VipParkingStrategy.park()
+         * With using Mockito spy, verify and doReturn */
+        //given
+        Car car1 = new Car("car1");
+        Car car2 = new Car("car2");
+        ParkingLot parkingLot = new ParkingLot("parkinglot1", 1);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
 
+        Receipt receipt1 = new Receipt();
+        receipt1.setCarName(car1.getName());
+        receipt1.setParkingLotName(parkingLot.getName());
+
+        Receipt receipt2 = new Receipt();
+        receipt2.setCarName(car2.getName());
+        receipt2.setParkingLotName(NO_PARKING_LOT);
+
+        //when
+        VipParkingStrategy vipParkingStrategyMock = spy(new VipParkingStrategy());
+        vipParkingStrategyMock.park(parkingLots, car1);
+        vipParkingStrategyMock.park(parkingLots, car2);
+        //then
+        verify(vipParkingStrategyMock, times(1)).createReceipt(any(), any());
+        verify(vipParkingStrategyMock, times(1)).createNoSpaceReceipt(any());
+        doReturn(receipt1).when(vipParkingStrategyMock).createReceipt(parkingLot, car1);
+        doReturn(receipt2).when(vipParkingStrategyMock).createNoSpaceReceipt(car2);
+        assertEquals("car1", receipt1.getCarName());
+        assertEquals("car2", receipt2.getCarName());
     }
 
     @Test
@@ -19,10 +49,11 @@ public class VipParkingStrategyTest {
 
         /* Exercise 4, Write a test case on VipParkingStrategy.park()
          * With using Mockito spy, verify and doReturn */
+
     }
 
     @Test
-    public void testIsAllowOverPark_givenCarNameContainsCharacterAAndIsVipCar_thenReturnTrue(){
+    public void testIsAllowOverPark_givenCarNameContainsCharacterAAndIsVipCar_thenReturnTrue() {
 
         /* Exercise 5, Write a test case on VipParkingStrategy.isAllowOverPark()
          * You may refactor the code, or try to use
@@ -31,7 +62,7 @@ public class VipParkingStrategyTest {
     }
 
     @Test
-    public void testIsAllowOverPark_givenCarNameDoesNotContainsCharacterAAndIsVipCar_thenReturnFalse(){
+    public void testIsAllowOverPark_givenCarNameDoesNotContainsCharacterAAndIsVipCar_thenReturnFalse() {
 
         /* Exercise 5, Write a test case on VipParkingStrategy.isAllowOverPark()
          * You may refactor the code, or try to use
@@ -40,7 +71,7 @@ public class VipParkingStrategyTest {
     }
 
     @Test
-    public void testIsAllowOverPark_givenCarNameContainsCharacterAAndIsNotVipCar_thenReturnFalse(){
+    public void testIsAllowOverPark_givenCarNameContainsCharacterAAndIsNotVipCar_thenReturnFalse() {
         /* Exercise 5, Write a test case on VipParkingStrategy.isAllowOverPark()
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
