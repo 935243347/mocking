@@ -49,7 +49,29 @@ public class VipParkingStrategyTest {
 
         /* Exercise 4, Write a test case on VipParkingStrategy.park()
          * With using Mockito spy, verify and doReturn */
+        //given
+        Car car1 = createMockCar("car1");
+        Car car2 = createMockCar("car2");
+        CarDao carDao = mock(CarDaoImpl.class);
+        ParkingLot parkingLot = new ParkingLot("parkinglot1", 1);
+        parkingLot.getParkedCars().add(car1);
+        List<ParkingLot> parkingLots = new ArrayList<>();
+        parkingLots.add(parkingLot);
 
+        Receipt receipt2 = new Receipt();
+        receipt2.setCarName(car2.getName());
+        receipt2.setParkingLotName(NO_PARKING_LOT);
+
+        //when
+        when(carDao.isVip(any())).thenReturn(false);
+        VipParkingStrategy vipParkingStrategyMock = spy(new VipParkingStrategy());
+        vipParkingStrategyMock.park(parkingLots, car2);
+
+        //then
+        verify(vipParkingStrategyMock, times(1)).createNoSpaceReceipt(any());
+        doReturn(receipt2).when(vipParkingStrategyMock).createNoSpaceReceipt(car2);
+        assertEquals("car2", receipt2.getCarName());
+        assertEquals("No Parking Lot", receipt2.getParkingLotName());
     }
 
     @Test
