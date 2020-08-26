@@ -94,9 +94,6 @@ public class VipParkingStrategyTest {
          */
         //given
         Car car1 = createMockCar("Acar1");
-        ParkingLot parkingLot = new ParkingLot("parkinglot1", 1);
-        List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(parkingLot);
 
         //when
         when(carDao.isVip(anyString())).thenReturn(true);
@@ -115,9 +112,6 @@ public class VipParkingStrategyTest {
          */
         //given
         Car car1 = createMockCar("Bcar1");
-        ParkingLot parkingLot = new ParkingLot("parkinglot1", 1);
-        List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(parkingLot);
 
         //when
         when(carDao.isVip(anyString())).thenReturn(true);
@@ -135,9 +129,6 @@ public class VipParkingStrategyTest {
          */
         //given
         Car car1 = createMockCar("Acar1");
-        ParkingLot parkingLot = new ParkingLot("parkinglot1", 1);
-        List<ParkingLot> parkingLots = new ArrayList<>();
-        parkingLots.add(parkingLot);
 
         //when
         when(carDao.isVip(anyString())).thenReturn(false);
@@ -153,6 +144,15 @@ public class VipParkingStrategyTest {
          * You may refactor the code, or try to use
          * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
          */
+        //given
+        Car car1 = createMockCar("Bcar1");
+
+        //when
+        when(carDao.isVip(anyString())).thenReturn(false);
+        boolean allow = vipParkingStrategy.isAllowOverPark(car1);
+
+        //then
+        assertFalse(allow);
     }
 
     private Car createMockCar(String carName) {
